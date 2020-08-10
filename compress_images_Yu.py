@@ -11,13 +11,14 @@ from glob import glob
 from os import remove, walk
 from os.path import split, sep, join
 
-Dirs = [   'F:\\Yu\\20170602\\fish1\\'
+Dirs = ['E:\\jing\\20200710\\',
+#         'E:\\jing\\20200703\\'
 ]
+
+base_dirs = list()
 
 for y in range(0, len(Dirs)):
         rawDir= Dirs[y]
-        print (Dirs[y])
-        base_dirs = list()
         for root, dirs, files in walk(rawDir, topdown=False):
             for name in dirs:
                 base_dirs.append(join(root, name))
@@ -32,23 +33,27 @@ def convert(v, verbose=False):
     if verbose:    
         print('Processed image number {0}'.format(v))
 
-def process_images(base_dir):
+def process_images(base_dir, parallelism=True):
     from multiprocessing import cpu_count
     from multiprocessing.pool import Pool    
     from glob import glob
     
     fnames = glob(base_dir + 'TM*.stack')
     if len(fnames) > 0:
-        num_workers = cpu_count()
-        p = Pool(num_workers)
-        p.map(convert, fnames)
-        p.close()
+        if parallelism: 
+            num_workers = cpu_count()
+            p = Pool(num_workers)
+            p.map(convert, fnames)
+            p.close()
+        else:
+            map(convert, fnames)
     else:
         print('No .stack files found in {0}'.format(base_dir))
 
 
 if __name__ == '__main__':    
     print('Begin compressing images.')
+    print(base_dirs)
     for base_dir in base_dirs:
         print(base_dir)
         process_images(base_dir)
