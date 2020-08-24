@@ -11,15 +11,18 @@ from glob import glob
 from os import remove, walk
 from os.path import split, sep, join
 
-Dirs = ['E:\\jing\\20200710\\',
-#         'E:\\jing\\20200703\\'
+Dirs = ['D:\\jing\\20200823\\5dpf_HuC-GCaMP7FF-GFAP-RGECO_LG-vs-replayGU_fish01_exp07_20200823_191353\\',
+        # 'D:\\jing\\20200823\\'
 ]
 
 base_dirs = list()
 
 for y in range(0, len(Dirs)):
-        rawDir= Dirs[y]
-        for root, dirs, files in walk(rawDir, topdown=False):
+    rawDir= Dirs[y]
+    for root, dirs, files in walk(rawDir, topdown=False):
+        if 'ch0.xml' in files:
+            base_dirs.append(root)
+        else:       
             for name in dirs:
                 base_dirs.append(join(root, name))
                 
